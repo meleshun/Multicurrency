@@ -1,0 +1,97 @@
+<?php 
+/**
+ * Copyright © 2019 Cubo. All rights reserved.
+ * See https://cubo.agency/
+**/
+?>
+<style>
+	.td-input {
+		width: 160px;
+	}
+</style>
+<div class="page-main-actions">
+	<div class="page-actions">
+		<div class="page-actions-inner" data-title="Manufacturer Currency Rates">
+			<div class="page-actions-buttons">
+				<button class="action-default scalable add primary" id="update_manufacturers" title="Update Manufacturers" type="button"><span>Update Manufacturers</span></button>
+				<button class="action-default scalable add primary" id="update_products" title="Update Products" type="button"><span>Update Products</span></button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="admin__data-grid-wrap admin__data-grid-wrap-static">
+	<table class="data-grid">
+		<thead>
+			<tr>
+				<th class="data-grid-th">
+					<span>Manufacturer</span>
+				</th>
+				<th class="data-grid-th">
+					<span>Rates</span>
+				</th>
+			</tr>
+		</thead>
+		<tbody>
+		<?php
+
+			// Get values from a table cubo_multicurrency_manufacturers
+			$om = \Magento\Framework\App\ObjectManager::getInstance();
+			$connection = $om->get('Magento\Framework\App\ResourceConnection')->getConnection();
+
+			// Select data 
+			$manufacturers = $connection->select()->from('cubo_multicurrency_manufacturers', ['manufacturer_label', 'manufacturer_rates']);
+
+			foreach ($connection->fetchAll($manufacturers) as $manufacturer) {
+				echo "<tr><td>{$manufacturer['manufacturer_label']}</td><td class=\"td-input\"><input type=\"text\" value=\"{$manufacturer['manufacturer_rates']}\"></td></tr>";
+			}
+		
+		?>
+		</tbody>
+	</table>
+</div>
+
+<script>
+require([
+	'jquery'
+], function ($) {
+	$(function () {
+
+		// Ajax/UpdateManufacturers
+		$('#update_manufacturers').click(function() {
+			var url = '<?php echo $this->getUrl("multicurrency/ajax/updatemanufacturers") ?>';
+			var data = [];
+			$('tbody tr').each(function() {
+				manufacturer_label = $(this).children().first().text();
+				manufacturer_rates = $(this).children().last().children()[0].value;
+				data.push([manufacturer_label, manufacturer_rates]);
+			});
+
+			$.ajax({
+				url: url,
+				showLoader: true,
+				data: {'form_key': FORM_KEY, 'data': data},
+				type: "POST",
+				success: function(result) {
+					$('tbody').html(result);
+				}
+			});		
+		});
+
+		// Ajax/UpdateProducts
+		$('#update_products').click(function() {
+			var url = '<?php echo $this->getUrl("multicurrency/ajax/updateproducts") ?>';
+			$.ajax({
+				url: url,
+				showLoader: true,
+				data: {'form_key': FORM_KEY},
+				type: "POST",
+				success: function(result) {
+				}
+			});		
+		});
+
+	});
+});
+
+</script>

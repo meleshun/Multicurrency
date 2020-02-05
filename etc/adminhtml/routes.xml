@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2019 Cubo. All rights reserved.
+ * See https://cubo.agency/
+**/
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:App/etc/routes.xsd">
+	<router id="admin">
+		<route id="multicurrency" frontName="multicurrency">
+			<module name="Cubo_Multicurrency" />
+		</route>
+	</router>
+</config>

@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2019 Cubo. All rights reserved.
+ * See https://cubo.agency/
+**/
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+	<menu>
+		<add id="Cubo_Multicurrency::manufacturers" title="Multicurrency" translate="title" module="Cubo_Multicurrency" parent="Magento_CurrencySymbol::system_currency" sortOrder="20" dependsOnModule="Cubo_Multicurrency" action="multicurrency/manufacturers" resource="Cubo_Multicurrency::manufacturers"/>
+	</menu>
+</config>
